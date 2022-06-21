@@ -1,8 +1,8 @@
 public class Operation {
     TokenType type;
-    float valueA = 0;
+    float valueA = 0; 
     float valueB = 0;
-
+    
     public Operation(TokenType type, float valueA, float valueB) {
         this.type = type;
         this.valueA = valueA;

@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,7 +52,7 @@ public class App {
                     break;
             }
 
-            clrscr();
+     
 
         }
         scanner.close();
@@ -70,15 +69,5 @@ public class App {
         return option;
     }
 
-    public static void clrscr() {
-        // Clears Screen in java
-        try {
-            if (System.getProperty("os.name").contains("Windows"))
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            else
-                Runtime.getRuntime().exec("clear");
-        } catch (IOException | InterruptedException ex) {
-        }
-    }
 
 }

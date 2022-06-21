@@ -55,7 +55,7 @@ class Lexer {
                 advance();
             } else if (Character.isDigit(current)) {
                 StringBuilder sb = new StringBuilder();
-                while (Character.isDigit(current)) {
+                while (Character.isDigit(current) || current == '.') {
                     sb.append(current);
                     advance();
                 }
