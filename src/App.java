@@ -33,7 +33,7 @@ public class App {
                     break;
                 case 2:
                     for (Token token : tokens) {
-                        System.out.println(token);
+                        System.out.println(token.toString());
                     }
                     break;
                 case 3:
