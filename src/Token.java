@@ -8,5 +8,9 @@ public class Token {
         this.type = type;
         this.value = value;
     }
+    
+    public String toString() {
+        return type + ": " + value;
+    }
 
 }
