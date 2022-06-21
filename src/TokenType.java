@@ -1,10 +1,10 @@
 enum TokenType {
-    NUMBER,
-    PLUS,
-    MINUS,
-    MULTPIPLY,
-    DIVIDE,
+    NUMBER,// 12323
+    PLUS, // + 
+    MINUS, // - 
+    MULTPIPLY, // *
+    DIVIDE, // "/"
     // PARENTHESES
-    LPAREN,
-    RPAREN
+    LPAREN, // "("
+    RPAREN // ")"
 }
