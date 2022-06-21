@@ -54,7 +54,7 @@ class Lexer {
                 tokens.add(new Token(TokenType.RPAREN, ")"));
                 advance();
             } else if (Character.isDigit(current)) {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder(); // "123"
                 while (Character.isDigit(current) || current == '.') {
                     sb.append(current);
                     advance();
