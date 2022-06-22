@@ -1,16 +1,16 @@
 public class Token {
 
-    public TokenType type;
+    public TokenType type; // Menyimpan tipe token
 
-    public String value;
+    public String value; // Menyimpan nilai token
 
-    public Token(TokenType type, String value) {
-        this.type = type;
-        this.value = value;
+    public Token(TokenType type, String value) { // Konstruktor
+        this.type = type; // Menyimpan tipe token
+        this.value = value; // Menyimpan nilai token
     }
 
-    public String toString() {
-        return type + ": " + value;
+    public String toString() {// Menampilkan object token sebagai string
+        return type + ": " + value; // Menampilkan tipe token dan nilai token
     }
 
 }

@@ -1,7 +1,7 @@
 enum TokenType {
-    NUMBER,// 12323
-    PLUS, // + 
-    MINUS, // - 
+    NUMBER, // 12323
+    PLUS, // +
+    MINUS, // -
     MULTPIPLY, // *
     DIVIDE, // "/"
     // PARENTHESES

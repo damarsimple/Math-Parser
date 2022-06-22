@@ -3,116 +3,128 @@ import java.util.Stack;
 
 public class Parser {
 
-    List<Token> tokens;
+    List<Token> tokens; // Menyimpan list dari token yang diterima dari Lexer
 
-    int pos = 0;
+    int pos = 0; // Menyimpan posisi dari token yang sedang dibaca
 
-    Stack <Operation> stack = new Stack<>();
+    Stack<Operation> stack = new Stack<>(); // Menyimpan stack dari operasi yang diterima dari Lexer
 
-    Token current = null;
+    Token current = null; // Menyimpan token yang sedang dibaca
 
-    
-    Parser(List<Token> tokens) {
-        this.tokens = tokens;
-        advance();
+    Parser(List<Token> tokens) { // Konstruktor
+        this.tokens = tokens; // Menyimpan list dari token yang diterima dari Lexer
+        advance(); // Membaca token pertama
     }
 
-    void advance() {
+    void advance() { // Membaca token berikutnya
         try {
-            current = tokens.get(pos);
-            pos++;
-        } catch (IndexOutOfBoundsException e) {
-            current = null;
+            current = tokens.get(pos); // Menyimpan token yang sedang dibaca
+            pos++; // Menajukan posisi ke token berikutnya
+        } catch (IndexOutOfBoundsException e) { // Jika posisi melebihi ukuran list
+            current = null; // Menyimpan token null
         }
 
     }
 
-    public float parse() {
-        float result = expr();
-        if (current != null) {
-            throw new RuntimeException("Expected end of input but got " + current);
+    public float parse() { // Menghitung hasil ekspresi
+        float result = expr(); // Menghitung hasil ekspresi
+        if (current != null) { // Jika token yang sedang dibaca tidak sama dengan null
+            throw new RuntimeException("Expected end of input but got " + current); // Menampilkan pesan error
         }
-        return result;
+        return result; // Mengembalikan hasil ekspresi
     }
 
-    public Stack<Operation> getStack() {
-        return this.stack;
+    public Stack<Operation> getStack() { // Mengembalikan stack dari operasi yang diterima dari Lexer
+        return this.stack; // Mengembalikan stack dari operasi yang diterima dari Lexer
+
     }
 
+    public float expr() { // Menghitung ekspresi
+        float result = term(); // Menghitung term
 
-    public float expr() {
-        float result = term();
+        while (current != null && (current.type == TokenType.PLUS || current.type == TokenType.MINUS)) { // Jika token
+                                                                                                         // yang sedang
+                                                                                                         // dibaca sama
+                                                                                                         // dengan PLUS
+                                                                                                         // atau MINUS
+            TokenType op = current.type; // Menyimpan tipe token yang sedang dibaca
 
-        while (current != null && (current.type == TokenType.PLUS || current.type == TokenType.MINUS)) {
-            TokenType op = current.type;
+            float cpResult = result; // Menyimpan hasil ekspresi yang sedang dibaca
 
-            float cpResult = result;
+            advance(); // Membaca token berikutnya
+            float right = term(); // Menghitung term
 
-            
-            advance();
-            float right = term();
+            stack.push(new Operation(op, cpResult, right)); // Menambahkan operasi ke stack
 
-            stack.push(new Operation(op, cpResult, right));
-
-            if (op == TokenType.PLUS) {
-                result += right;
+            if (op == TokenType.PLUS) { // Jika tipe token yang sedang dibaca sama dengan PLUS
+                result += right; // Menjumlahkan hasil ekspresi
             } else {
-                result -= right;
+                result -= right; // Mengurangkan hasil ekspresi
             }
-       
+
         }
 
-        return result;
+        return result; // Mengembalikan hasil ekspresi
 
     }
-    
-    public float term() {
-        float result = factor();
 
-        while (current != null && (current.type == TokenType.MULTPIPLY || current.type == TokenType.DIVIDE)) {
-            TokenType op = current.type;
-            
-            float cpResult = result;
+    public float term() { // Menghitung term
+        float result = factor(); // Menghitung factor
 
-            advance();
+        while (current != null && (current.type == TokenType.MULTPIPLY || current.type == TokenType.DIVIDE)) { // Jika
+                                                                                                               // token
+                                                                                                               // yang
+                                                                                                               // sedang
+                                                                                                               // dibaca
+                                                                                                               // sama
+                                                                                                               // dengan
+                                                                                                               // MULTPIPLY
+                                                                                                               // atau
+                                                                                                               // DIVIDE
+            TokenType op = current.type; // Menyimpan tipe token yang sedang dibaca
 
-            float right = factor();
+            float cpResult = result; // Menyimpan hasil ekspresi yang sedang dibaca
 
-            stack.push(new Operation(op, cpResult, right));
-            if (op == TokenType.MULTPIPLY) {
-                result *= right;
+            advance(); // Membaca token berikutnya
+
+            float right = factor(); // Menghitung factor
+
+            stack.push(new Operation(op, cpResult, right)); // Menambahkan operasi ke stack
+            if (op == TokenType.MULTPIPLY) { // Jika tipe token yang sedang dibaca sama dengan MULTPIPLY
+                result *= right; // Mengkalikan hasil ekspresi
             } else {
-                result /= right;
+                result /= right; // Membagi hasil ekspresi
             }
         }
 
-        return result;
+        return result; // Mengembalikan hasil ekspresi
 
     }
-    
-    public float factor() {
-        if (current == null) {
-            throw new RuntimeException("Unexpected end of input");
+
+    public float factor() { // Menghitung factor
+        if (current == null) { // Jika token yang sedang dibaca sama dengan null
+            throw new RuntimeException("Unexpected end of input"); // Menampilkan pesan error
         }
-        
-        if (current.type == TokenType.NUMBER) {
-            float result = Float.parseFloat(current.value);
-            advance();
-            return result;
+
+        if (current.type == TokenType.NUMBER) { // Jika token yang sedang dibaca sama dengan NUMBER
+            float result = Float.parseFloat(current.value); // Menyimpan nilai token yang sedang dibaca
+            advance(); // Membaca token berikutnya
+            return result; // Mengembalikan hasil ekspresi
         }
-        
-        if (current.type == TokenType.LPAREN) {
-            advance();
-            float result = expr();
-            if (current == null || current.type != TokenType.RPAREN) {
-                throw new RuntimeException("Expected ')'");
+
+        if (current.type == TokenType.LPAREN) { // Jika token yang sedang dibaca sama dengan LPAREN
+            advance(); // Membaca token berikutnya
+            float result = expr(); // Menghitung ekspresi
+            if (current == null || current.type != TokenType.RPAREN) { // Jika token yang sedang dibaca tidak sama
+                                                                       // dengan RPAREN
+                throw new RuntimeException("Expected ')'"); // Menampilkan pesan error
             }
-            advance();
-            return result;
+            advance(); // Membaca token berikutnya
+            return result; // Mengembalikan hasil ekspresi
         }
-        
-        throw new RuntimeException("Unexpected token: " + current);
-        
+
+        throw new RuntimeException("Unexpected token: " + current); // Menampilkan pesan error
+
     }
-    
+
 }
